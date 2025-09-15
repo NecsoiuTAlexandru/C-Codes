@@ -1,0 +1,206 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+
+using namespace std;
+
+class Masina {
+private:
+    
+    static int nrMasinii;
+    float km;
+    char* masina;
+    int nrmasini;
+    string* proprietari;
+public:
+
+    Masina():masina(NULL),km(0),nrmasini(0),proprietari(NULL){}
+
+    Masina(const char* masina, float km, int nrmasini, string* proprietari)
+    {
+        nrMasinii++;
+        this->masina = new char[strlen(masina) + 1];
+        strcpy(this->masina, masina);
+        this->km = km;
+        this->nrmasini = nrmasini;
+        this->proprietari = new string[nrmasini];
+        for (int i = 0; i < nrmasini; i++)
+        {
+            this->proprietari[i] = proprietari[i];
+        }
+    }
+
+    Masina(const Masina& m) {
+        nrMasinii++;
+        this->masina = new char[strlen(m.masina) + 1];
+        strcpy(this->masina, m.masina);
+        this->km = m.km;
+        this->nrmasini = m.nrmasini;
+        this->proprietari = new string[m.nrmasini];
+        for (int i = 0; i < m.nrmasini; i++)
+        {
+            this->proprietari[i] = m.proprietari[i];
+        }
+
+    }
+
+    void setKm(float km)
+    {
+        if (km < 20000)
+        {
+            this->km=km;
+        }
+    }
+
+    float getKm()
+    {
+        return this->km;
+    }
+
+    void setMasina(const char* masina)
+    {
+        if (masina != NULL)
+        {
+            this->masina = new char[strlen(masina) + 1];
+            strcpy(this->masina, masina);
+        }
+    }
+
+    const char* getMasina()
+    {
+        return this->masina;
+    }
+
+    bool MasinaNoua()
+    {
+        if (masina != NULL && km < 50000)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    ~Masina()
+    {
+        delete[]this->masina;
+        delete[]this->proprietari;
+    }
+
+    Masina& operator =(const Masina& m)
+    {
+        if (this != &m)
+        {
+            delete[]this->masina;
+            this->masina = new char[strlen(m.masina) + 1];
+            strcpy(this->masina, m.masina);
+            this->km = m.km;
+            this->nrmasini = m.nrmasini;
+            delete[]this->proprietari;
+            this->proprietari = new string[m.nrmasini];
+            for (int i = 0; i < m.nrmasini; i++)
+            {
+                this->proprietari[i] = m.proprietari[i];
+            }
+        }
+        return *this;
+    }
+
+    explicit operator int()
+    {
+        return this->km;
+    }
+
+    Masina& operator +=(int km)
+    {
+        this->km += km;
+        return *this;
+    }
+    Masina operator +(int km)const
+    {
+        Masina copie = *this;
+        copie.km += km;
+        return copie;
+    }
+    string& operator[](int index){
+
+        if (index >= 0 || index < nrmasini)
+            return proprietari[index];
+    }
+
+    bool operator ==(Masina& m)
+    {
+        if (this->km == m.km)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool operator <= (Masina& m)
+    {
+        return this->km <= m.km;
+    }
+
+    bool MasinaVeche()const {
+        return km > 200000;
+    }
+    friend ostream& operator <<(ostream& out, const Masina& m)
+    {
+        out << "Marca masinii este: " << m.masina << endl;
+        out << "Numarul de km ai masinii este de " << m.km << endl;
+        out << "Numarul masinilor de aceeasi marca este de " << m.nrmasini << endl;
+        for (int i = 0; i < m.nrmasini; i++)
+        {
+            cout << "Fostii proprietari ai celorlalte masini au fost " << m.proprietari[i] << endl;
+        }
+        out << "Masina este inregistrata cu numarul " << m.nrMasinii++<<endl;
+
+        return out;
+    }
+
+};
+
+int Masina::nrMasinii = 0;
+
+int main()
+{
+    string propietari[] = { "Alex","Herzeg","George","Mihnea","GHita","Buzdugan" };
+    Masina masina1("BMW", 40000, 4, propietari);
+    cout << masina1;
+
+    if (masina1.MasinaNoua())
+    {
+        cout << "Masina este noua" << endl;
+    }
+    else
+    {
+        cout << "Masina nu este noua" << endl;
+    }
+
+    Masina masina2 = masina1 + 10000;
+    cout << masina2 << endl;
+
+    masina1 += 20000;
+    cout << masina1 << endl;
+
+    cout << "Al doilea proprietar inregistrat in sistem este " << propietari[1] << endl;
+
+    Masina masina3("AUDI", 210000, 5, propietari);
+    cout << masina3.MasinaVeche() << endl;
+
+    if (masina1 == masina2)
+    {
+        cout << "Masinile sunt aceleasi"<<endl;
+    }
+    else
+    {
+        cout << "Masinile nu sunt la fel"<<endl;
+    }
+
+    cout << (masina1 <= masina2 )<< endl;
+}
