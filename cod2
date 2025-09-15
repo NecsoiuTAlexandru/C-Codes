@@ -1,0 +1,276 @@
+#define _CRT_SECURE_NO_WARNINGS_
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+class Angajat {
+protected:
+    string* nume;
+    int varsta;
+    int salariu;
+    const int IdAngajat;
+    int nrPosturi;
+
+public:
+    Angajat() :IdAngajat(0) {
+        this->nume = new string[0];
+        varsta = 0;
+        salariu = 0;
+        nrPosturi = 0;
+    }
+
+
+
+    Angajat(string* nume, int varsta, int salariu, int nrPosturi , int id) :IdAngajat(id) {
+
+        this->varsta = varsta;
+        this->salariu = salariu;
+        this->nrPosturi = nrPosturi;
+        this->nume = new string[nrPosturi];
+
+        for (int i = 0; i < nrPosturi; i++)
+        {
+            this->nume[i] = nume[i];
+        }
+    }
+
+    void introducereAngajat( string* nume, int varsta, int salariu, int nrPosturi) {
+      
+        this->varsta = varsta;
+        this->salariu = salariu;
+        this->nrPosturi = nrPosturi;
+        if (nume != nullptr && nrPosturi > 0) {
+           
+            this->nume = new string[nrPosturi];
+            for (int i = 0; i < nrPosturi; i++) {
+                this->nume[i] = nume[i];
+            }
+        }
+        else {
+          
+            this->nume = nullptr;
+        
+    }
+
+    }
+
+    Angajat(const Angajat& ag):IdAngajat(ag.IdAngajat)
+    {
+        this->varsta = ag.varsta;
+        this->salariu = ag.salariu;
+        this->nrPosturi = ag.nrPosturi;
+        this->nume = new string[ag.nrPosturi];
+
+        for (int i = 0; i < ag.nrPosturi; i++)
+        {
+            this->nume[i] = ag.nume[i];
+        }
+    }
+
+    Angajat operator = (const Angajat& ag)
+    {
+        if (this != &ag){
+            delete[] this->nume;
+        }
+        this->varsta = ag.varsta;
+        this->salariu = ag.salariu;
+        this->nrPosturi = ag.nrPosturi;
+        this->nume = new string[ag.nrPosturi];
+
+        for (int i = 0; i < ag.nrPosturi; i++)
+        {
+            this->nume[i] = ag.nume[i];
+        }
+        return *this;
+    }
+
+    ~Angajat()
+    {
+        delete[]this->nume;
+    }
+
+
+    void setNrPosturi(int nrPosturi)
+    {
+        this->nrPosturi=nrPosturi;
+    }
+
+    int getNrPosturi()
+    {
+        return nrPosturi;
+    }
+
+    void setAngajat(int salariu)
+    {
+        this->salariu = salariu;
+    }
+
+    int getAngajat()
+    {
+        return salariu;
+    }
+
+    friend ostream& operator<<(ostream& out , Angajat& ag)
+    {
+        if(ag.nume != nullptr && ag.nrPosturi > 0) {
+            for (int i = 0; i < ag.nrPosturi; i++) {
+                out << "Numele angajatului este: " << ag.nume[i] << endl;
+            }
+        }
+ else {
+            out << "Numele angajatului este: N/A" << endl;
+            }
+        out << "Are varsta de : " << ag.varsta << endl;
+        out << "Are salariul de : " << ag.salariu << endl;
+        out << "Nr de posturi disp. pentru angajati este: " << ag.nrPosturi << endl;
+        out << "Are Id-ul : " << ag.IdAngajat << endl;
+        return out;
+    }
+
+    Angajat& operator ++(int ) {
+        ++varsta;
+        return *this;
+    }
+
+    operator int() {
+        return varsta;
+    }
+
+    Angajat& operator +=(int salariu)
+    {
+       this-> salariu += salariu;
+       return *this;
+
+    }
+
+    Angajat& operator -= (int salariu)
+    {
+        this->salariu -= salariu;
+        return *this;
+
+    }
+};
+
+
+class Programator :public Angajat {
+protected:
+   int  nrTascuri;
+public:
+   
+
+    virtual void printeaza() {
+        cout <<*nume<<" ,cu vasrat  de : " << varsta << " lei " << ", cu salariul de : " << salariu << " , ID - ul " << IdAngajat <<", cu un numar de "<<nrTascuri<<" taskuri " << endl;
+    }
+    Programator(string* nume, int varsta, int salariu, int nrPosturi, int id, int nrTascuri) :Angajat(nume, varsta, salariu, nrPosturi, id) {
+           
+        this->nrTascuri = nrTascuri;
+    }
+    
+    friend ostream& operator<<(ostream& out, Programator& ag)
+    {
+        if (ag.nume != nullptr && ag.nrPosturi > 0) {
+            for (int i = 0; i < ag.nrPosturi; i++) {
+                out << "Numele angajatului este: " << ag.nume[i] << endl;
+            }
+        }
+        else {
+            out << "Numele angajatului este: N/A" << endl;
+        }
+        out << "Are varsta de : " << ag.varsta << endl;
+        out << "Are salariul de : " << ag.salariu << endl;
+        out << "Nr de posturi disp. pentru angajati este: " << ag.nrPosturi << endl;
+        out << "Are Id-ul : " << ag.IdAngajat << endl;
+        cout << "Are un numar de tasckuri de : " << ag.nrTascuri << endl;
+        return out;
+    }
+
+
+};
+void printeazaObiect(Programator& obiect)
+{
+    obiect.printeaza();
+}
+template<int M_membrii>
+class Echipa {
+private: 
+    Angajat* membrii;
+public:
+    Echipa() {
+        this->membrii = NULL;
+    }
+
+    Echipa(Angajat* membrii) {
+        this->membrii = new Angajat[M_membrii];
+        for (int i = 0; i < M_membrii; i++)
+        {
+            this->membrii[i] = membrii[i];
+        }
+    }
+        ~Echipa() {
+            delete[]membrii;
+        }
+
+        void setEchipa(int M_membrii)
+        {
+            this->M_membrii = M_membrii;
+        }
+
+        int getEchipa() {
+            return M_membrii;
+        }
+    
+        friend ostream& operator<< (ostream& out, Echipa<M_membrii>& echipa) {
+            for (int i = 0; i < M_membrii; i++) {
+                cout << "Angajatul din aripa A cu postul " << i << " este " << echipa.membrii[i] << endl;
+            }
+            return out;
+        }
+
+       
+
+};
+
+  class AripaB: public Echipa<2>{};
+
+int main()
+{   
+    string  nume[] = { "Andrei"};
+    Angajat angajat;
+    angajat.introducereAngajat(NULL, 0, 0, 0 );
+    cout << "Date pentru primul angajat sunt :" << endl;
+    cout << angajat << endl;
+
+    Angajat angajat1(nume, 28, 3500, 1, 1);
+    cout << angajat1;
+
+    cout << endl;
+    angajat1+= 1000;
+    cout << angajat1;
+
+    cout << endl;
+    angajat1++;
+    cout << angajat1<<endl;
+    angajat1 -= 1000;
+    cout << angajat1 << endl;
+
+    string nume1[] = { "Stefan" };
+    Programator programator1(nume1, 30, 4000, 1, 4, 10);
+    cout << programator1;
+
+    Angajat* membrii = new Angajat[4];
+    cout << endl;
+    string nume2[] = {"George"};
+    membrii[0] = Angajat(nume, 25, 3000, 1, 2);
+    membrii[1] = Angajat(nume1, 29, 4000, 1, 3);
+    membrii[2] = Angajat(nume2, 32, 4500, 1, 4);
+    Echipa<3>AripaA(membrii);
+    cout << AripaA << endl;
+
+    AripaB ar;
+    cout <<"Numarul de oameni din echipa B este: "<< ar.getEchipa() << endl;
+    
+
+}
+
+
