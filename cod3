@@ -1,0 +1,182 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+
+using namespace std;
+
+class Animal {
+
+protected:
+
+	char* nume;
+	float greutate;
+	int varsta;
+	const int IdCod;
+
+public:
+
+	Animal() : nume(NULL),greutate(0), varsta(0) ,IdCod(0)  {}
+
+	//Animal():IdCod(IdCod), varsta(varsta),greutate(greutate),nume(nume){
+
+	//}
+
+	void initiereAnimal(const char* nume, float greutate, int varsta) {
+		
+		this->nume =new char[strlen(nume)+1];
+		this->greutate = greutate;
+		this->varsta = varsta;
+      cout << "Datele initiale sunt :"<<"Varsta :"<<this->varsta<<" Greutate: "<<this->greutate<<" Varsta: "<<this->varsta << endl;
+
+	}
+
+	Animal(const char* nume, float greutate, int varsta , int id ) :IdCod(id) {
+
+		this->nume =new char[strlen(nume)+1];
+		strcpy(this->nume, nume);
+		this->greutate = greutate;
+		this->varsta = varsta;
+
+	}
+
+	virtual void printeaza() {
+		cout << "Animalul are numele " << nume << " , cu greutatea de : " << greutate <<" kg " << " , cu varsta de : " << varsta <<" și ID-ul "<<IdCod<< endl;
+	}
+
+	// Constructor de copiere
+	Animal(const Animal& sursa) : IdCod(sursa.IdCod) {
+
+		this->greutate = sursa.greutate;
+		this->varsta = sursa.varsta;
+		if (sursa.nume != nullptr) {
+			this->nume = new char[strlen(sursa.nume) + 1];
+			strcpy(this->nume, sursa.nume);
+		}
+		else {
+			this->nume = nullptr;
+		}
+	
+
+	}
+
+	Animal& operator= (const Animal& sursa)  {
+
+		delete[] this->nume;
+
+		this->greutate = sursa.greutate;
+		this->varsta = sursa.varsta;
+		if (sursa.nume != nullptr) {
+			this->nume = new char[strlen(sursa.nume) + 1];
+			strcpy(this->nume, sursa.nume);
+		}
+		else {
+			this->nume = nullptr;
+		
+	}
+
+		return *this;
+	}
+
+	~Animal() {
+
+		delete[]this->nume;
+
+	}
+
+	void setAnimal(int varstaNoua) {
+		this->varsta = varstaNoua;
+}
+
+	int getAnimal() {
+		
+		return this->varsta;
+	
+	}
+
+	friend ostream& operator << (ostream& out, Animal& an) {
+
+		out << "Numele animalului este : " << an.nume << endl;
+		out << "Greutatea animalului este de : " << an.greutate <<" KG " << endl;
+		out << "Varsta animalului este de : " << an.varsta<<" ani " << endl;
+		out << "Id-ul de recunoastere al cainelui este de : " << an.IdCod << endl;
+
+		return out;
+	}
+
+
+	//se adauga la varsta cate 1 an de fiecare data cand este apelata
+	Animal& operator++(int) {
+		++varsta;
+		return *this;
+	}
+
+	operator int() {
+		return varsta;
+	}
+	// se adauga o val data de tine dupa ce il apelezi
+	Animal& operator+= (float greutate){
+		this->greutate += greutate;
+		return *this;
+	}
+};
+
+class Caine : public Animal {
+
+public:
+
+	Caine(  float greutate, int varsta, int IdCod=8): Animal("Azorel", greutate, varsta, IdCod) {
+	}
+	//pentru a folosi aceasta scriere se scoate poineterul nume din constructor si se adauga un nume 
+	// in main va fi folosita apelarea fara a mai introduce numele , acesta fiind singur introdus.
+	//virtual void printeaza() override{
+		//cout <<nume<<" ,cu greutatea de : " << greutate << " kg " << ", cu varsta de : " << varsta << " si ID - ul " << IdCod << endl;
+	//}
+
+	friend ostream& operator << (ostream& out, Caine& an) {
+
+		out << "Numele animalului este : " << an.nume << endl;
+		out << "Greutatea animalului este de : " << an.greutate << " KG " << endl;
+		out << "Varsta animalului este de : " << an.varsta << " ani " << endl;
+		out << "Id-ul de recunoastere al cainelui este de : " << an.IdCod << endl;
+
+		return out;
+	}
+
+
+};
+
+void printeazaObiect(Animal& obiect) {
+	obiect.printeaza();
+}
+
+int main()
+{
+	Animal animal;
+	
+    animal.initiereAnimal("Noname ", 0, 0);
+	cout << "Date pentru primul animal sunt :" << endl;
+	cout << animal << endl;
+
+	Animal animal2("Azorel", 7, 2 , 3456347);
+	cout << animal2 << endl;
+
+    animal2++;
+	cout << animal2 << endl;
+
+	animal2+=10;
+	cout << animal2 << endl;
+
+	//Caine caine1( 4, 5, 234);
+	Caine caine( 10, 2 , 120837);
+	cout << caine;
+
+	animal.setAnimal(9);
+	cout<<"Noua varsta a animalului este : "<<animal.getAnimal()<<endl;
+	cout << endl;
+	Animal pisica = animal2;
+	cout << "Obiectul pisica copiat: " << endl;
+	cout << pisica;
+	//printeazaObiect(caine);
+	return 0;
+}
+
+
