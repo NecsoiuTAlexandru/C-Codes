@@ -1,0 +1,248 @@
+#include <string>
+#include <iostream>
+
+
+using namespace std;
+
+class Echipa {
+private:
+	string* nume;
+	int nrjucatori;
+	float buget;
+	int clasament;
+	const int formatie;
+
+public:
+	//constructori fara parametrii
+	Echipa() :nume(NULL), nrjucatori(0), buget(0), clasament(0), formatie(11)
+	{
+
+	}
+
+	//Metoda
+
+	int Nouclasament(int clasament, float buget) {
+
+		if (getBuget() > 150000)
+		{
+			return clasament - 1;
+		}
+		else
+		{
+			return clasament;
+		}
+
+	}
+
+	bool Transferurifacute(int nrjucatori) {
+
+		if (nrjucatori >= 3)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+
+	}
+	//Constructor cu parametrii
+	Echipa(int nrjucatori, string* nume, float buget, int clasament) :formatie(11)
+	{
+		this->nrjucatori = nrjucatori;
+		this->nume = new string[nrjucatori];
+		for (int i = 0; i < nrjucatori; i++)
+		{
+			this->nume[i] = nume[i];
+		};
+		this->buget = buget;
+		this->clasament = clasament;
+	}
+
+	//Constructor de copiere
+	Echipa(const Echipa& e) :formatie(e.formatie) {
+		this->nrjucatori = e.nrjucatori;
+		this->nume = new string[e.nrjucatori];
+		for (int i = 0; i < e.nrjucatori; i++)
+		{
+			this->nume[i] = e.nume[i];
+		};
+		this->buget = e.buget;
+		this->clasament = e.clasament;
+	}
+
+	Echipa& operator=(const Echipa& e)
+	{
+		if (this != &e)
+		{
+			this->nrjucatori = e.nrjucatori;
+			this->nume = new string[e.nrjucatori];
+			for (int i = 0; i < e.nrjucatori; i++)
+			{
+				this->nume[i] = e.nume[i];
+			};
+			this->buget = e.buget;
+			this->clasament = e.clasament;
+		}
+
+		return *this;
+	}
+
+	//Destructor
+	~Echipa() {
+		delete[]nume;
+	}
+
+	//setter
+
+	void setBuget(float buget)
+	{
+		this->buget = buget;
+	}
+
+	//getter
+
+	float getBuget()
+	{
+		return this->buget;
+	}
+
+	bool operator ==(const Echipa& e)
+	{
+		if (this->nrjucatori != e.nrjucatori) return false;
+		if (this->buget != e.buget) return false;
+		if (this->clasament != e.clasament) return false;
+		if (this->formatie != e.formatie) return false;
+
+		for (int i = 0; i < nrjucatori; i++)
+		{
+			if (this->nume[i] != e.nume[i]) return false;
+		}
+
+		return true;
+
+	}
+
+	Echipa& operator +=(int buget)
+	{
+		this->buget += buget;
+		return *this;
+	}
+
+	Echipa& operator-=(int buget)
+	{
+		this->buget -= buget;
+		return *this;
+	}
+	/*Echipa& operator--(int clasament) {
+		this->clasament--;
+		return *this;
+	}*/
+
+	Echipa& operator++(int)
+	{
+		this->clasament++;
+		return *this;
+	}
+
+	operator bool()const {
+		return buget > 130000 && clasament < 4;
+	}
+
+	string& operator [](int index)
+	{
+		if (index > 0 && index <= nrjucatori)
+			return nume[index];
+	}
+
+	//operator de afisare <<
+	friend istream& operator >>(istream& in, Echipa& e);
+	friend ostream& operator <<(ostream& out, Echipa& e)
+	{
+		out << "Nr de jucatori transferati este de: " << e.nrjucatori << endl;
+		out << "Jucatorii adusi sunt: " << endl;
+		for (int i = 0; i < e.nrjucatori; i++)
+		{
+			out << "Jucatorul cu nr: " << i << " se numeste: " << e.nume[i] << endl;
+		}
+		out << "Bugetul de cumparat jucatori a fost de: " << e.buget<<endl;
+		out << "Clasamentul pe care se afla echipa este: " << e.clasament<<endl;
+		out << "Formatia pe teren in toate meciurile de pana acum (pana la final ) a fost de: " << e.formatie << endl;
+
+		return out;
+	}
+};
+ istream& operator >>(istream& in, Echipa& e)
+{
+	 cout << "Introdu numarul de jucatori: ";
+	 in >> e.nrjucatori;
+	 cout << endl;
+	 cout << "Jucatorii care s-au transferat sunt :" << endl;
+	 for (int i = 0; i < e.nrjucatori; i++)
+	 {
+		 
+		 cout << "Jucatorul " << i + 1 << " este: ";
+		 in >> ws;
+		 getline(in, e.nume[i]);
+	 }
+	 cout << "Introdu bugetul: " ;
+	 in >> e.buget;
+	 cout << "Introdu clasamentul: ";
+	 in >> e.clasament;
+	 cout << endl;
+
+	 return in;
+}
+
+int main()
+{
+	
+	string nume[] = { "Mbappe","Vinisius","Joselu","Carvahal","Bellingham" };
+	Echipa echipa(3, nume, 150000, 3);
+	echipa.setBuget(200000);
+	cout << "Bugetul echipei este de : " << echipa.getBuget()<<endl;
+	cout << echipa;
+
+	cout << "Clasamentul dupa estimarea bugetului este: " << echipa.Nouclasament(3, 0) << endl;;
+
+	if (echipa.Transferurifacute(4))
+	{
+		cout << "Sunt suficiente transferuri" << endl;
+	}
+	else
+	{
+		cout << "Nu sunt suficiente transferuri" << endl;
+	}
+	
+	echipa += 123000;
+	echipa -= 23000;
+	cout << echipa;
+
+	Echipa echipa1(2, nume, 123452, 5);
+	if (echipa == echipa1)
+	{
+		cout << "Echipele sunt identice";
+	}
+	else
+	{
+		cout << "Echipa nu sunt identice";
+	}
+
+	//echipa1--;
+	
+	echipa1++;
+	cout << echipa1;
+
+	if (echipa1)
+	{
+		cout << "Echipa este perfecta" << endl;;
+	}
+	else
+	{
+		cout << "Echipa este slaba"<<endl;
+	}
+	cout << endl;
+	cout << "Primul jucator transferat a fost " << echipa[1] << endl;
+
+	cin >> echipa;
+}
