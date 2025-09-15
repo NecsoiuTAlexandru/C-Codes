@@ -1,0 +1,332 @@
+//#define _CRT_SECURE_NO_WARNINGS
+//#include <iostream>
+//
+//using namespace std;
+//class Masa {
+//private:
+//    char* materialmasa;
+//    int pret;
+//    float greutate;
+//    const int nrid;
+//public:
+//    Masa() :materialmasa(NULL), pret(0), greutate(0), nrid(0) {
+//
+//    }
+//
+//    bool cumparatorMasa(const char* materialmasa)
+//    {
+//        if (materialmasa == "Stejar")
+//        {
+//            return true;
+//        }
+//        else
+//        {
+//            return false;
+//        }
+//    }
+//
+//    Masa(const char* materialmasa, int pret, float greutate) :nrid(nrid) {
+//        this->materialmasa = new char[strlen(materialmasa) + 1];
+//        strcpy(this->materialmasa, materialmasa);
+//        this->pret = pret;
+//        this->greutate = greutate;
+//    }
+//
+//    Masa(const Masa& m) :nrid(m.nrid) {
+//        this->materialmasa = new char[strlen(m.materialmasa) + 1];
+//        strcpy(this->materialmasa, m.materialmasa);
+//        this->pret = m.pret;
+//        this->greutate = m.greutate;
+//    }
+//
+//    Masa& operator =(const Masa& m) {
+//        if (this != &m)
+//        {
+//            delete[] this->materialmasa;
+//            this->materialmasa = new char[strlen(m.materialmasa) + 1];
+//            strcpy(this->materialmasa, m.materialmasa);
+//            this->pret = m.pret;
+//            this->greutate = m.greutate;
+//        }
+//        return *this;
+//    }
+//
+//    ~Masa() {
+//        delete[]this->materialmasa;
+//}
+//
+//   void setPret(int pret)
+//    {
+//        this->pret = pret;
+//    }
+//
+//    int getPret()
+//    {
+//        return pret;
+//    }
+//
+//    void setGreutate(float greutate)
+//    {
+//        this->greutate = greutate;
+//    }
+//
+//    float getGreutate()
+//    {
+//        return greutate;
+//    }
+//   /*Masa& operator ++(int)
+//    {
+//       this->pret++;
+//        return *this;
+//    }*/
+//
+//    Masa& operator +=(int pret)
+//    {
+//        this->pret += pret;
+//        return *this;
+//    }
+//
+//    Masa& operator --(int) {
+//        this->pret--;
+//        return *this;
+//    }
+//
+//    Masa& operator -=(int pret)
+//    {
+//        this->pret -= pret;
+//        return *this;
+//    }
+//
+//    bool cumparatornouMasa()const {
+//        return this->pret < 300 && this->greutate < 15;
+//    }
+//
+//    bool operator ==(const Masa& m)const
+//    {
+//        
+//        return this->materialmasa == new char[strlen(m.materialmasa) + 1] && this->greutate == m.greutate && this->pret == m.pret && this->nrid == m.nrid;
+//        
+//    }
+//
+//    friend istream& operator >>(istream& in, Masa& m) {
+//        cout << "Masa este facuta din:";
+//        in >> m.materialmasa;
+//        cout << "Pretul mesei este de";
+//        in >> m.pret;
+//        cout << "Greutatea mesei este de: ";
+//        in >> m.greutate;
+//        cout << "Numarul mesei este de: ";
+//        
+//        return in;
+//
+//    }
+//    friend ostream& operator <<(ostream& out, Masa& m) {
+//        out << "Masa este facuta din: " << m.materialmasa << endl;
+//        out << "Pretul mesei este de: " << m.pret << endl;
+//        out << "Greutatea mesei este de: " << m.greutate << endl;
+//        out << "Nr mesei este: " << m.nrid << endl;
+//        return out;
+//    }
+//};
+//
+//int main()
+//{
+//    Masa masa("Stejar", 300, 10);
+//    cout << masa << endl;
+//
+//    masa.setPret(380);
+//    cout << "Pretul mesei a crescut  la " << masa.getPret();
+//    cout << endl;
+//    if (masa.cumparatorMasa("Mesteacan"))
+//    {
+//        cout << "Cumparatorul achizitioneaza masa" << endl;
+//    }
+//    else
+//    {
+//        cout << "Cumparatorul nu cumpara masa" << endl;
+//    }
+//
+//    masa--;
+//    cout << masa << endl;
+//
+//    Masa masa1("Mesteacan", 400, 15);
+//    masa1 += 150;
+//    cout << masa1 << endl;
+//
+//    masa1 -= 200;
+//    cout << masa1 << endl;
+//
+//
+//    if (masa1==masa)
+//    { 
+//        cout << "Sunt egale";
+//    }
+//    else
+//    {
+//        cout << "Nu sunt egale";
+//    }
+//
+//    if (masa1.cumparatornouMasa())
+//    {
+//        cout << "Cumpara masa";
+//      
+//    }
+//    else
+//    {
+//        cout << "Nu cumpara masa";
+//    }
+//    cout << endl;
+//    cin >> masa;
+//}
+
+#include <iostream>
+
+using namespace std;
+
+class Colegi {
+private:
+	string* nume;
+	int nrcolegi;
+	int varsta;
+public:
+
+	Colegi() :nume(NULL), nrcolegi(0), varsta(0) {
+
+	}
+
+	Colegi(int nrcolegi,string* nume , int varsta){
+		this->nume = new string[nrcolegi];
+		for (int i = 0; i < nrcolegi; i++)
+		{
+			this->nume[i] = nume[i];
+		}
+		this->nrcolegi = nrcolegi;
+		this->varsta = varsta;
+	}
+
+	Colegi(const Colegi& c) {
+		this->nume = new string[c.nrcolegi];
+		for (int i = 0; i < nrcolegi; i++)
+		{
+			this->nume[i] = nume[i];
+		}
+		this->nrcolegi = c.nrcolegi;
+		this->varsta = c.varsta;
+
+	}
+
+	Colegi& operator =(const Colegi& c) {
+		if(this!=&c)
+		{ 
+		this->nume = new string[c.nrcolegi];
+		for (int i = 0; i < c.nrcolegi; i++)
+		{
+			this->nume[i] = nume[i];
+		}
+		this->nrcolegi = c.nrcolegi;
+		this->varsta = c.varsta;
+        }
+		return *this;
+	}
+
+	~Colegi() {
+		delete[]this->nume;
+}
+
+	void setVarsta(int varsta)
+	{
+		this->varsta = varsta;
+}
+	int getVarsta()
+	{
+		return varsta;
+	}
+
+	Colegi& operator -= (int varsta)
+	{
+		this->varsta -= varsta;
+		return *this;
+	}
+
+	Colegi& operator += (int varsta)
+	{
+		this->varsta+=varsta;
+		return *this;
+	}
+
+	Colegi& operator ++ (int)
+	{
+		this->varsta++;
+		return *this;
+	}
+
+	Colegi& operator -- (int)
+	{
+		this->varsta--;
+		return *this;
+	}
+
+	bool clasacolegi()const {
+		return varsta > 18 && nrcolegi > 2;
+	}
+
+	string& operator[](int index) 
+	{
+		if (index > 0 || index <= nrcolegi)
+			return nume[index];
+	
+	}
+	bool  operator == (const Colegi& c)
+	{
+		return this->nrcolegi==c.nrcolegi && this->nume==new string[c.nrcolegi] && this->varsta == c.varsta;
+	}
+	friend ostream& operator << (ostream& out, Colegi& c)
+	{
+		cout << "Nr de colegi este " << c.nrcolegi << endl;
+		for (int i = 0; i < c.nrcolegi; i++)
+		{
+			cout << "Numele elevului " << i + 1 << " este " << c.nume[i] << endl;
+		}
+		cout << "Varsta elevilor este de : " << c.varsta << endl;
+
+		return out;
+	}
+};
+
+int main()
+{
+	string nume[] = { "Alex","George","Maka" };
+	Colegi colegi1(2,nume,18);
+	cout << colegi1;
+
+	colegi1.setVarsta(20);
+	cout << "Restul de colegi au varsta de: " << colegi1.getVarsta()<<endl;
+
+	colegi1++;
+	cout << colegi1<<endl;
+
+	colegi1--;
+	cout << colegi1<<endl;
+
+	Colegi coleg1(1, nume, 17);
+	coleg1 += 2;
+	cout << coleg1;
+
+	Colegi colegi2(3, nume, 15);
+	colegi2 -= 1;
+	cout << colegi2;
+
+	Colegi colegi3(3, nume, 20);
+	cout << colegi3.clasacolegi()<<endl;
+	
+	cout << "Primul coleg este: " << colegi1[1]<<endl;
+
+	if (colegi3 == colegi1)
+	{
+		cout << "Clasele sunt la fel";
+	}
+	else
+	{
+		cout << "Clasele sunt diferite";
+	}
+}
